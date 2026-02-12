@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Wordle.Core.Game
+namespace Wordle.Core
 {
     public class WordleGame
     {
-        private List<string> wordsList = new List<string>();
+        private List<string> wordsList = null!;
         private string chosenWord = null!;
         private GuessResult guessResult = null!;
         private char[] finalGuessLeftover = null!;
         private char[] finalWordLeftover = null!;
-
-        public WordleGame()
+        
+        public WordleGame(WordProvider provider)
         {
-            ReadAllWords();
-            chosenWord = ChooseWord();
-            //chosenWord = "baaat";
-            //IsValidGuess("aaacv");
-            //Console.ReadLine();
+            wordsList = provider.GetAllWords().ToList();
+            chosenWord = provider.GetRandomWord();
+        }
+
+
+        public WordleGame(List<string> words, string chosenWord)
+        {
+            wordsList = words;
+            this.chosenWord = chosenWord;
         }
 
         public GuessResult IsValidGuess(string currentGuess)
@@ -40,6 +44,7 @@ namespace Wordle.Core.Game
             else if (currentGuess.Equals(chosenWord))
             {
                 guessResult.State = GuessResult.GameState.Correct;
+                guessResult.finalGuessPositions = [2, 2, 2, 2, 2];
             }
             else
             {
@@ -69,9 +74,6 @@ namespace Wordle.Core.Game
                     finalWordLeftover[i] = chosenWord[i];
                 }
             }
-            //Console.WriteLine(string.Join(", ", finalGuessPositions)+" BINGO");
-            //Console.WriteLine(string.Join("", finalGuessLeftover) +" BINGO");
-            //Console.WriteLine(string.Join("", finalWordLeftover) + " BINGO");
 
         }
         private void AreCharactersFindable()
@@ -92,45 +94,10 @@ namespace Wordle.Core.Game
                 }
             }
         }
-
-        private string ChooseWord()
+        public string GetWord()
         {
-            Random rand = new Random();
-            var wordNumber = rand.Next(0, wordsList.Count);
-            Console.WriteLine(wordNumber);
-            Console.WriteLine(wordsList[wordNumber]);
-            return wordsList[wordNumber];
-
+            return chosenWord;
         }
-
-        public void ReadAllWords()
-        {
-            
-            try
-            {
-                //Pass the file path and file name to the StreamReader constructor
-                StreamReader sr = new StreamReader("C:\\Users\\GeorgeVæra\\Desktop\\Github\\Projects\\Wordle\\Wordle\\wordle_ord.txt");
-                //Read the first line of text
-                var line = sr.ReadLine();
-                //Continue to read until you reach end of file
-                while (line != null )
-                {
-                    //write the line to console window
-                    if(line.Length==5)
-                        wordsList.Add(line);
-                    
-                    //Read the next line
-                    line = sr.ReadLine();
-                }
-                //close the file
-                sr.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-        }
-
     }
 
     public class GuessResult

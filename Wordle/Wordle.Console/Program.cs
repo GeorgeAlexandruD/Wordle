@@ -1,5 +1,4 @@
 ﻿using Wordle.Core;
-using Wordle.Core.Game;
 
 
 internal class Program
@@ -7,7 +6,9 @@ internal class Program
 
     private static void Main(string[] args)
     {
-        var game = new WordleGame();
+
+        var provider = new WordProvider("C:\\Users\\GeorgeVæra\\Desktop\\Github\\Projects\\Wordle\\Wordle\\wordle_ord.txt");
+        var game = new WordleGame(provider);
 
         var tries = 6;
         while (tries > 0)
@@ -37,6 +38,8 @@ internal class Program
                     Console.WriteLine(closeness);
                     Console.WriteLine(guessResult.State.ToString());
                     Console.WriteLine("You have " + --tries + " tries left");
+                    if (tries == 0)
+                        Console.WriteLine("The word was: " + game.GetWord());
                 }
                 //TODO: tests
                 //TODO: UI
