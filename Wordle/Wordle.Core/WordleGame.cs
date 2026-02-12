@@ -36,7 +36,7 @@ namespace Wordle.Core
             finalGuessLeftover = new char[5];
             finalWordLeftover = new char[5];
 
-            guessResult.State = GuessResult.GameState.NotAWord;
+            guessResult.State = GuessResult.GameState.Incorrect;
 
             if (!wordsList.Contains(currentGuess)) 
                 guessResult.State = GuessResult.GameState.NotAWord;
@@ -90,7 +90,6 @@ namespace Wordle.Core
                     Console.WriteLine(finalGuessLeftover[i]+ " Is foundable in the word");
                     finalGuessLeftover[i] = ' ';
                     finalWordLeftover[index] = ' ';
-           
                 }
             }
         }
@@ -102,7 +101,7 @@ namespace Wordle.Core
 
     public class GuessResult
     {
-        public enum GameState { Correct = 0, PartiallyCorrect = 1, NotAWord  = 2 };
+        public enum GameState { Correct = 0, PartiallyCorrect = 1, Incorrect =2, NotAWord  = 3 };
         public GameState State;
         public List<int> finalGuessPositions = null!;
 

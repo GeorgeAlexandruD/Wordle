@@ -67,16 +67,30 @@
         }
 
         [Fact]
-        public void Guess_NotInList()
+        public void Guess_WordInListButIncorrect()
         {
-            var words = new List<string> { "apple" };
+            var words = new List<string> { "apple", "banana", "rrrrr" };
             var game = new WordleGame(words, "apple");
 
             //not a foundeable word 
-            var result = game.IsValidGuess("papal");
+            var result = game.IsValidGuess("rrrrr");
 
             // Checks game state
-            Assert.Equal(GuessResult.GameState.NotAWord, result.State);
+            Assert.Equal(GuessResult.GameState.Incorrect, result.State);
+            Assert.Equal(new List<int> { 0, 0, 0, 0, 0 }, result.finalGuessPositions);
+        }
+
+        [Fact]
+        public void Guess_GetWordReturnsCorrectWord()
+        {
+            var words = new List<string> { "apple", "banana", "rrrrr" };
+            var game = new WordleGame(words, "apple");
+
+            //not a foundeable word 
+            var result = game.GetWord();
+
+            // Checks game state
+            Assert.Equal("apple", result);
         }
     }
 }
