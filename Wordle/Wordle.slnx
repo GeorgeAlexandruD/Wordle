@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Wordle.Console/Wordle.Console.csproj" />
+  <Project Path="Wordle.Core/Wordle.Core.csproj" />
+</Solution>
