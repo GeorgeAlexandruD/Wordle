@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="ReadMe.md" />
   </Folder>
+  <Project Path="Wordle.AvaloniaUI/Wordle.AvaloniaUI.csproj" Id="b9d7b6cf-bc9e-479e-9b77-fb4594517ea5" />
   <Project Path="Wordle.Console/Wordle.Console.csproj" />
   <Project Path="Wordle.Core.Tests/Wordle.Core.Tests.csproj" Id="2832116b-28e7-4b04-9b68-f0356287ce65" />
   <Project Path="Wordle.Core/Wordle.Core.csproj" />

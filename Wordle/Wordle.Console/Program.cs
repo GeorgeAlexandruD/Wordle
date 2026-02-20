@@ -8,6 +8,8 @@ internal class Program
     {
 
         var provider = new WordProvider("C:\\Users\\GeorgeVæra\\Desktop\\Github\\Projects\\Wordle\\Wordle\\wordle_ord.txt");
+
+        var alphabet = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
         var game = new WordleGame(provider);
 
         var tries = 6;
@@ -35,15 +37,37 @@ internal class Program
                 {
 
                     string closeness = string.Join(", ", guessResult.finalGuessPositions);
+
                     Console.WriteLine(closeness);
                     Console.WriteLine(guessResult.State.ToString());
+
+                    foreach (var item in alphabet)
+                    {
+                        if (guessResult.green.Contains(item))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                        }
+                        else if (guessResult.yellow.Contains(item))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                        }
+                        else if (guessResult.alphabet.Contains(item))
+                        {
+                            Console.ForegroundColor = ConsoleColor.Gray; // default color
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkGray; // not guessed
+                        }
+
+                        Console.Write(item);
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine();
                     Console.WriteLine("You have " + --tries + " tries left");
                     if (tries == 0)
                         Console.WriteLine("The word was: " + game.GetWord());
                 }
-                //TODO: tests
-                //TODO: UI
-                //TODO: documentation
 
             }
 

@@ -12,11 +12,27 @@ namespace Wordle.Core
         private GuessResult guessResult = null!;
         private char[] finalGuessLeftover = null!;
         private char[] finalWordLeftover = null!;
+        private List<char> alphabet = new List<char> { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
         
         public WordleGame(WordProvider provider)
         {
             wordsList = provider.GetAllWords().ToList();
             chosenWord = provider.GetRandomWord();
+            guessResult = new GuessResult
+            {
+                finalGuessPositions = [0, 0, 0, 0, 0],
+                alphabet = new List<char>()
+            };
+            
+        }
+        private void GetLeftowerAlphabet(string currentWord)
+        {
+            Console.WriteLine("current " + currentWord);
+            Console.WriteLine("correct " + chosenWord);
+
+            char[] leftoverAlphabet = new char[26];
+            alphabet.RemoveAll(c => currentWord.Contains(c));
+
         }
 
 
@@ -29,12 +45,10 @@ namespace Wordle.Core
         public GuessResult IsValidGuess(string currentGuess)
         {
 
-            guessResult = new GuessResult
-            {
-                finalGuessPositions = [0, 0, 0, 0, 0]
-            };
+            guessResult.finalGuessPositions = [0, 0, 0, 0, 0];
             finalGuessLeftover = new char[5];
             finalWordLeftover = new char[5];
+            guessResult.alphabet.Clear();
 
             guessResult.State = GuessResult.GameState.Incorrect;
 
@@ -43,28 +57,30 @@ namespace Wordle.Core
 
             else if (currentGuess.Equals(chosenWord))
             {
+                GetLeftowerAlphabet(currentGuess);
                 guessResult.State = GuessResult.GameState.Correct;
                 guessResult.finalGuessPositions = [2, 2, 2, 2, 2];
             }
             else
             {
+                GetLeftowerAlphabet(currentGuess);
                 AreCharsPositionedPerfectly(currentGuess);
                 AreCharactersFindable(); 
             }
+            guessResult.alphabet = new List<char>(alphabet);
 
             return guessResult;
         }
 
         private void AreCharsPositionedPerfectly(string currentGuess)
         {
-            
             for (int i = 0; i < 5; i++)
             {
                 if (currentGuess[i] == chosenWord[i])
                 {
                     guessResult.finalGuessPositions[i] = 2;
                     guessResult.State = GuessResult.GameState.PartiallyCorrect;
-                    Console.WriteLine(currentGuess[i] + " IS CORRECT");
+                    guessResult.green.Add(currentGuess[i]);
                     finalGuessLeftover[i] = ' ';
                     finalWordLeftover[i] = ' ';
                 }
@@ -87,7 +103,7 @@ namespace Wordle.Core
                 {
                     guessResult.finalGuessPositions[i] = 1;
                     guessResult.State = GuessResult.GameState.PartiallyCorrect;
-                    Console.WriteLine(finalGuessLeftover[i]+ " Is foundable in the word");
+                    guessResult.yellow.Add(finalGuessLeftover[i]);
                     finalGuessLeftover[i] = ' ';
                     finalWordLeftover[index] = ' ';
                 }
@@ -104,6 +120,9 @@ namespace Wordle.Core
         public enum GameState { Correct = 0, PartiallyCorrect = 1, Incorrect =2, NotAWord  = 3 };
         public GameState State;
         public List<int> finalGuessPositions = null!;
+        public List<char> alphabet = null!;
+        public HashSet<char> yellow = [];
+        public HashSet<char> green = [];
 
     }
 }

@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Wordle.AvaloniaUI.MainWindow"
+        Width="400"
+        Height="650"
+        Title="Wordle">
+
+	<StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Spacing="20">
+
+		<!-- GAME BOARD -->
+		<UniformGrid x:Name="GameGrid"
+                     Rows="6"
+                     Columns="5"
+                     Margin="20"
+                     HorizontalAlignment="Center"/>
+
+		<!-- KEYBOARD -->
+		<WrapPanel x:Name="KeyboardPanel"
+                   HorizontalAlignment="Center"
+                   MaxWidth="350"/>
+
+	</StackPanel>
+
+</Window>

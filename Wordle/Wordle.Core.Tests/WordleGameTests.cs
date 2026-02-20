@@ -36,7 +36,6 @@
             Assert.Equal(GuessResult.GameState.PartiallyCorrect, result.State);
         }
 
-
         [Fact]
         public void Guess_DuplicateLetters_HandledCorrectly()
         {
@@ -45,8 +44,8 @@
 
             var result = game.IsValidGuess("ppppp");
 
-            // Adjust expected values depending on your logic
             Assert.Equal(GuessResult.GameState.PartiallyCorrect, result.State);
+            Assert.Equal(new List<int> { 0, 2, 2, 0, 0 }, result.finalGuessPositions);
         }
 
         [Fact]
